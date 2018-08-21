@@ -1,0 +1,23 @@
+language: cpp
+compiler: gcc
+before_install:
+  - sudo apt-get install libboost-all-dev -y
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+  - sudo apt-get update -qq
+  - sudo apt-get install gcc-7 g++-7 -y
+  - echo "deb http://archive.ubuntu.com/ubuntu xenial main universe" | sudo tee -a /etc/apt/sources.list
+  - sudo apt-get update
+  - sudo apt-get install libdlib-dev libopenblas-dev
+  - sudo apt-get install python-matplotlib
+install:
+  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 999 --slave /usr/bin/g++ g++ /usr/bin/g++-7
+  - sudo update-alternatives --auto gcc
+script:
+  - cmake -DCMAKE_BUILD_TYPE=Release .
+  - cmake --build .
+  - cmake --build . --target package
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script:
+    - curl -T realty-1.0.$TRAVIS_BUILD_NUMBER-Linux.deb -ucamelot58:$BINTRAY_API_KEY "https://api.bintray.com/content/camelot58/OTUS.Cpp/realty/$TRAVIS_BUILD_NUMBER/realty-1.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"

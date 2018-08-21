@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.2)
 set(PATCH_VERSION 1)
 if($ENV{TRAVIS_BUILD_NUMBER})
   set(PATCH_VERSION $ENV{TRAVIS_BUILD_NUMBER})
+  add_subdirectory(dlib)
 endif()
 
 project(realty VERSION 1.0.${PATCH_VERSION})

@@ -23,10 +23,12 @@ endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 add_executable(rclst rclst.cpp functions.cpp)
 add_executable(rclss rclss.cpp functions.cpp)
 
-# Настройка для всех целей
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-add_compile_options(-Wpedantic -Wall -Wextra)
+# Настройка для целей
+set_target_properties(rclst rclss PROPERTIES
+  CXX_STANDARD 14
+  CXX_STANDARD_REQUIRED ON
+  COMPILE_OPTIONS -Wall -Wextra -Wpedantic 
+)
 
 target_link_libraries(rclst openblas dlib)
 target_link_libraries(rclss openblas dlib)
